@@ -1,8 +1,6 @@
 <?php
-
 namespace frontend\controllers;
 
-use frontend\components\LocalBitcoinApi;
 use Yii;
 use frontend\models\BitcoinUser;
 use frontend\models\BitcoinUserSearch;
