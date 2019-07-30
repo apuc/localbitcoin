@@ -1,7 +1,6 @@
 <?php
 namespace console\controllers;
 
-use common\classes\Debug;
 use common\models\Options;
 use frontend\models\BitcoinUser;
 use frontend\components\LocalBitcoinsWalletAPI;
@@ -16,14 +15,18 @@ class UpdateDataController extends \yii\console\Controller
         $this->LBV_API = new LocalBitcoinsWalletAPI();
     }
 
-    public function actionDollarRate(): float
+    /**
+     * Получение курса рубля
+     */
+    public function actionDollarRate(): void
     {
         $res = $this->LBV_API->equation('usd_in_rub');
         Options::setOption('usd_in_rub', $res->data);
-
-        return $res->data;
     }
 
+    /**
+     * Получение максимального среднего курса доллара между www.bitfinex.com и www.bitstamp.net
+     */
     public function actionMaxValue(): void
     {
         $bitstampusd_avg = $this->LBV_API->equation('bitstampusd_avg');
@@ -34,6 +37,10 @@ class UpdateDataController extends \yii\console\Controller
                 $bitstampusd_avg->data) * $usd_in_rub->data);
     }
 
+    /**
+     * @throws \yii\console\Exception
+     * Получение баланса кошелька
+     */
     public function actionWalletValue(): void
     {
         $users = BitcoinUser::find()->all();

@@ -5,28 +5,40 @@ use common\classes\Debug;
 
 class LocalBitcoinsWalletAPI extends LocalBitcoins
 {
-    public function __construct($API_AUTH_KEY = null, $API_AUTH_SECRET = null)
-    {
-        $this->API_AUTH_KEY = $API_AUTH_KEY;
-        $this->API_AUTH_SECRET = $API_AUTH_SECRET;
-    }
-
+    /**
+     * @return object
+     * @throws \yii\console\Exception
+     */
     public function infos(): object
     {
         return $this->query('/api/wallet/');
     }
 
+    /**
+     * @param string $value
+     * @return object
+     * @throws \yii\console\Exception
+     */
     public function equation(string $value): object
     {
         return $this->query('/api/equation/' . $value);
     }
 
+    /**
+     * @return object
+     * @throws \yii\console\Exception
+     */
     public function balance(): object
     {
         return $this->query('/api/wallet-balance/');
     }
 
-
+    /**
+     * @param string $address
+     * @param int $amount
+     * @return object
+     * @throws \yii\console\Exception
+     */
     public function send(string $address, int $amount): object
     {
         return $this->query('/api/wallet-send/', array(
@@ -35,6 +47,13 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
         ));
     }
 
+    /**
+     * @param string $address
+     * @param int $amount
+     * @param int $pincode
+     * @return object
+     * @throws \yii\console\Exception
+     */
     public function sendPin(string $address, int $amount, int $pincode): object
     {
         return $this->query('/api/wallet-send/', array(
@@ -44,6 +63,10 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
         ));
     }
 
+    /**
+     * @return object
+     * @throws \yii\console\Exception
+     */
     public function addr(): object
     {
         return $this->query('/api/wallet-addr/');

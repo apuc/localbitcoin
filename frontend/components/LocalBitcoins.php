@@ -6,12 +6,21 @@ use yii\console\Exception;
 
 class LocalBitcoins
 {
-    public function __construct($API_AUTH_KEY = null, $API_AUTH_SECRET = null)
+    public function __construct(string $API_AUTH_KEY = null, string $API_AUTH_SECRET = null)
     {
         $this->API_AUTH_KEY = $API_AUTH_KEY;
         $this->API_AUTH_SECRET = $API_AUTH_SECRET;
     }
 
+    /**
+     * @param string $url
+     * @param array $post
+     * @param array $get
+     * @param array $search
+     * @param array $replace
+     * @return object
+     * @throws Exception
+     */
     public function query(
         string $url,
         array $post = [],
@@ -27,7 +36,7 @@ class LocalBitcoins
         }
 
         // Method
-        $api_get = array(
+        $api_get = [
             '/api/ads/',
             '/api/ad-get/{ad_id}/',
             '/api/ad-get/',
@@ -53,8 +62,8 @@ class LocalBitcoins
             '/api/wallet-addr/',
             '/api/merchant/invoices/',
             '/api/merchant/invoice/{invoice_id}/'
-        );
-        $api_post = array(
+        ];
+        $api_post = [
             '/api/ad/{ad_id}/',
             '/api/ad-create/',
             '/api/ad-delete/{ad_id}/',
@@ -76,8 +85,8 @@ class LocalBitcoins
             '/api/wallet-send-pin/',
             '/api/merchant/new_invoice/',
             '/api/merchant/delete_invoice/{invoice_id}/'
-        );
-        $api_public = array(
+        ];
+        $api_public = [
             '/buy-bitcoins-with-cash/{location_id}/{location_slug}/.json',
             '/sell-bitcoins-for-cash/{location_id}/{location_slug}/.json',
             '/buy-bitcoins-online/{countrycode:2}/{country_name}/{payment_method}/.json',
@@ -95,7 +104,7 @@ class LocalBitcoins
             '/bitcoinaverage/ticker-all-currencies/',
             '/bitcoincharts/{currency}/trades.json',
             '/bitcoincharts/{currency}/orderbook.json'
-        );
+        ];
 
         // Init curl
         static $ch = null;
@@ -169,6 +178,6 @@ class LocalBitcoins
             throw new Exception('Could not get reply: ' . curl_error($ch));
         }
         // return result
-        return json_decode($res);
+        return (object) json_decode($res);
     }
 }
