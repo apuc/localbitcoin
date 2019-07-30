@@ -16,7 +16,7 @@ class UpdateDataController extends \yii\console\Controller
         $this->LBV_API = new LocalBitcoinsWalletAPI();
     }
 
-    public function actionDollarRate()
+    public function actionDollarRate(): float
     {
         $res = $this->LBV_API->equation('usd_in_rub');
         Options::setOption('usd_in_rub', $res->data);
@@ -24,7 +24,7 @@ class UpdateDataController extends \yii\console\Controller
         return $res->data;
     }
 
-    public function actionMaxValue()
+    public function actionMaxValue(): void
     {
         $bitstampusd_avg = $this->LBV_API->equation('bitstampusd_avg');
         $bitfinexusd_avg = $this->LBV_API->equation('bitfinexusd_avg');
@@ -34,7 +34,7 @@ class UpdateDataController extends \yii\console\Controller
                 $bitstampusd_avg->data) * $usd_in_rub->data);
     }
 
-    public function actionWalletValue()
+    public function actionWalletValue(): void
     {
         $users = BitcoinUser::find()->all();
         foreach ($users as $user) {

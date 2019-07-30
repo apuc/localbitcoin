@@ -16,7 +16,7 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
         return $this->query('/api/wallet/');
     }
 
-    public function equation($value): object
+    public function equation(string $value): object
     {
         return $this->query('/api/equation/' . $value);
     }
@@ -26,7 +26,8 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
         return $this->query('/api/wallet-balance/');
     }
 
-    public function send($address, $amount): object
+
+    public function send(string $address, int $amount): object
     {
         return $this->query('/api/wallet-send/', array(
             'address' => $address,
@@ -34,7 +35,7 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
         ));
     }
 
-    public function sendPin($address, $amount, $pincode): object
+    public function sendPin(string $address, int $amount, int $pincode): object
     {
         return $this->query('/api/wallet-send/', array(
             'address' => $address,
