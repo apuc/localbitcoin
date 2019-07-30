@@ -1,6 +1,8 @@
 <?php
 namespace frontend\components;
 
+use common\classes\Debug;
+
 class LocalBitcoinsWalletAPI extends LocalBitcoins
 {
     public function __construct($API_AUTH_KEY = null, $API_AUTH_SECRET = null)
@@ -9,22 +11,22 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
         $this->API_AUTH_SECRET = $API_AUTH_SECRET;
     }
 
-    public function infos()
+    public function infos(): object
     {
         return $this->query('/api/wallet/');
     }
 
-    public function equation($value)
+    public function equation($value): object
     {
         return $this->query('/api/equation/' . $value);
     }
 
-    public function balance()
+    public function balance(): object
     {
         return $this->query('/api/wallet-balance/');
     }
 
-    public function send($address, $amount)
+    public function send($address, $amount): object
     {
         return $this->query('/api/wallet-send/', array(
             'address' => $address,
@@ -32,7 +34,7 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
         ));
     }
 
-    public function sendPin($address, $amount, $pincode)
+    public function sendPin($address, $amount, $pincode): object
     {
         return $this->query('/api/wallet-send/', array(
             'address' => $address,
@@ -41,7 +43,7 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
         ));
     }
 
-    public function addr()
+    public function addr(): object
     {
         return $this->query('/api/wallet-addr/');
     }

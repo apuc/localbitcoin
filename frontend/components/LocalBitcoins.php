@@ -1,6 +1,7 @@
 <?php
 namespace frontend\components;
 
+use common\classes\Debug;
 use yii\console\Exception;
 
 class LocalBitcoins
@@ -167,7 +168,6 @@ class LocalBitcoins
         if (false === $res) {
             throw new Exception('Could not get reply: ' . curl_error($ch));
         }
-
         // return result
         return json_decode($res);
     }
