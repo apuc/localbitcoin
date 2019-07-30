@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\components;
 
 use common\classes\Debug;
@@ -18,8 +19,7 @@ class LocalBitcoins
      * @param array $get
      * @param array $search
      * @param array $replace
-     * @return object
-     * @throws Exception
+     * @return LocalBitcoinsDto
      */
     public function query(
         string $url,
@@ -27,13 +27,15 @@ class LocalBitcoins
         array $get = [],
         array $search = [],
         array $replace = []
-    ): object {
+    ): LocalBitcoinsDto {
         if (!defined('SSL_VERIFYPEER')) {
             define('SSL_VERIFYPEER', true);
         }
         if (!defined('SSL_VERIFYHOST')) {
             define('SSL_VERIFYHOST', true);
         }
+
+        $pdo = new LocalBitcoinsDto();
 
         // Method
         $api_get = [
@@ -129,6 +131,7 @@ class LocalBitcoins
         $datas = '';
         if (in_array($url, $api_post)) {
             if (!empty($post)) {
+                $pdo->params = $post;
                 $datas = http_build_query($post, '', '&');
             }
             curl_setopt($ch, CURLOPT_POST, true);
@@ -136,12 +139,14 @@ class LocalBitcoins
             $is_post = true;
         } elseif (in_array($url, $api_get)) {
             if (!empty($get)) {
+                $pdo->params = $get;
                 $datas = http_build_query($get, '', '&');
             }
             curl_setopt($ch, CURLOPT_HTTPGET, true);
             $is_get = true;
         } else {
             if (!empty($get)) {
+                $pdo->params = $get;
                 $datas = http_build_query($get, '', '&');
             }
             curl_setopt($ch, CURLOPT_HTTPGET, true);
@@ -169,15 +174,30 @@ class LocalBitcoins
             $url .= '?' . $datas;
         }
 
-        // Let's go!
+        // Let's go!\
+        $pdo->query = 'https://localbitcoins.com' . $url;
         curl_setopt($ch, CURLOPT_URL, 'https://localbitcoins.com' . $url);
         $res = curl_exec($ch);
 
         // website/api error ?
         if (false === $res) {
-            throw new Exception('Could not get reply: ' . curl_error($ch));
+            $pdo->error = 'Could not get reply: ' . curl_error($ch);
+            return  $pdo;
+        }
+        $res = json_decode($res);
+
+        if (isset($res->error)){
+            $pdo->error = $res->error->message;
+            return  $pdo;
         }
         // return result
-        return (object) json_decode($res);
+        $pdo->data = $res->data;
+        return $pdo;
+    }
+
+    public function setAuthParams($key, $secret)
+    {
+        $this->API_AUTH_KEY = $key;
+        $this->API_AUTH_SECRET = $secret;
     }
 }

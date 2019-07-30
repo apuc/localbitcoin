@@ -6,27 +6,24 @@ use common\classes\Debug;
 class LocalBitcoinsWalletAPI extends LocalBitcoins
 {
     /**
-     * @return object
-     * @throws \yii\console\Exception
+     * @return LocalBitcoinsDto
      */
-    public function infos(): object
+    public function infos(): LocalBitcoinsDto
     {
         return $this->query('/api/wallet/');
     }
 
     /**
      * @param string $value
-     * @return object
-     * @throws \yii\console\Exception
+     * @return LocalBitcoinsDto
      */
-    public function equation(string $value): object
+    public function equation(string $value): LocalBitcoinsDto
     {
         return $this->query('/api/equation/' . $value);
     }
 
     /**
      * @return object
-     * @throws \yii\console\Exception
      */
     public function balance(): object
     {
@@ -37,7 +34,6 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
      * @param string $address
      * @param int $amount
      * @return object
-     * @throws \yii\console\Exception
      */
     public function send(string $address, int $amount): object
     {
@@ -52,7 +48,6 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
      * @param int $amount
      * @param int $pincode
      * @return object
-     * @throws \yii\console\Exception
      */
     public function sendPin(string $address, int $amount, int $pincode): object
     {
@@ -65,7 +60,6 @@ class LocalBitcoinsWalletAPI extends LocalBitcoins
 
     /**
      * @return object
-     * @throws \yii\console\Exception
      */
     public function addr(): object
     {
